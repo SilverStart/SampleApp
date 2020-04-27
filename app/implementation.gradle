@@ -1,0 +1,33 @@
+apply from: 'dependencies-version.gradle'
+apply plugin: 'kotlin-kapt'
+apply plugin: "de.mannodermaus.android-junit5"
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation androidx
+    implementation androidx_ktx
+    implementation material_design
+    implementation androidx_lifecycle_extension
+    implementation constraintlayout
+    implementation room
+    kapt room_compiler
+    implementation room_rx
+    implementation recycler_view
+    implementation rx_java
+    implementation rx_android
+    implementation dagger2
+    implementation dagger2_support
+    implementation retrofit
+    implementation gson
+    implementation glide
+    kapt glide_compiler
+    implementation retrofit_gson_converter
+    implementation retrofit_rx_converter
+    kapt dagger2_annotation
+    kapt dagger2_compiler
+    testImplementation junit_5
+    testRuntimeOnly junit_5_engine
+    testImplementation junit_5_params
+    testImplementation mockito
+}
