@@ -6,12 +6,12 @@ import com.silverstar.sampleapp.utils.Result
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
-class AllListViewModel constructor(processorHolder: ProcessorHolder<Unit, Result<List<Item>>>) {
+class AllListViewModel constructor(processorHolder: ProcessorHolder<Int, Result<List<Item>>>) {
 
     private val _isLoading = BehaviorSubject.createDefault(false)
     val isLoading: Observable<Boolean> = _isLoading
 
-    private val allItemListRequest = BehaviorSubject.create<Unit>()
+    private val allItemListRequest = BehaviorSubject.create<Int>()
 
     private val allItemListResult: Observable<Result<List<Item>>> =
         allItemListRequest
@@ -28,8 +28,19 @@ class AllListViewModel constructor(processorHolder: ProcessorHolder<Unit, Result
                 it.data
             }
 
+    private var currentPageIndex: Int = INITIAL_PAGE_INDEX
+
     fun init() {
-        allItemListRequest.onNext(Unit)
+        currentPageIndex = INITIAL_PAGE_INDEX
+        loadNextPage()
     }
 
+    fun loadNextPage() {
+        currentPageIndex++
+        allItemListRequest.onNext(currentPageIndex)
+    }
+
+    companion object {
+        private const val INITIAL_PAGE_INDEX = 0
+    }
 }

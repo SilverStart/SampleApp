@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 @DisplayName("AllListViewModel 클래스")
 class AllListViewModelTest {
 
-    private val mock: ProcessorHolder<Unit, Result<List<Item>>> = mock()
+    private val mock: ProcessorHolder<Int, Result<List<Item>>> = mock()
 
     private lateinit var viewModel: AllListViewModel
 
