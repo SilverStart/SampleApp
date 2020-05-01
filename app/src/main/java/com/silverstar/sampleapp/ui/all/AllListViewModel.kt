@@ -1,17 +1,17 @@
 package com.silverstar.sampleapp.ui.all
 
-import com.silverstar.sampleapp.business.LoadItemProcessorHolder
-import com.silverstar.sampleapp.business.MergeTwoItemProcessorHolder
+import com.silverstar.sampleapp.business.base.ProcessorHolder
 import com.silverstar.sampleapp.data.dao.ItemDao
+import com.silverstar.sampleapp.data.entity.Item
 import com.silverstar.sampleapp.data.pojo.ItemFromServer
 import com.silverstar.sampleapp.utils.Result
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
 class AllListViewModel(
-    loadItemProcessorHolder: LoadItemProcessorHolder,
+    loadItemByPageProcessorHolder: ProcessorHolder<Int, Result<List<ItemFromServer>>>,
     dao: ItemDao,
-    mergeTwoItemProcessorHolder: MergeTwoItemProcessorHolder
+    mergeTwoItemProcessorHolder: ProcessorHolder<Pair<List<ItemFromServer>, List<Item>>, List<Item>>
 ) {
 
     private val _isLoading = BehaviorSubject.createDefault(false)
@@ -22,7 +22,7 @@ class AllListViewModel(
     private val allItemListResult: Observable<Result<List<ItemFromServer>>> =
         allItemListRequest
             .doOnNext { _isLoading.onNext(true) }
-            .compose(loadItemProcessorHolder.processor)
+            .compose(loadItemByPageProcessorHolder.processor)
             .doOnNext { _isLoading.onNext(false) }
             .share()
 
