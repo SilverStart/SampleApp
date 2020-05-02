@@ -16,6 +16,7 @@ dependencies {
     implementation recycler_view
     implementation rx_java
     implementation rx_android
+    implementation rx_kotlin
     implementation dagger2
     implementation dagger2_support
     implementation retrofit

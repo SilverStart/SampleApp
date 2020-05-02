@@ -8,6 +8,7 @@ ext {
     recycler_view_version = '28.0.0'
     rx_java_version = '2.2.10'
     rx_android_version = '2.1.1'
+    rx_kotlin_version = '2.0.2'
     dagger2_version = '2.26'
     retrofit_version = '2.7.2'
     gson_version = '2.8.6'
@@ -29,6 +30,7 @@ ext {
             recycler_view = "com.android.support:recyclerview-v7:$recycler_view_version",
             rx_java = "io.reactivex.rxjava2:rxjava:$rx_java_version",
             rx_android = "io.reactivex.rxjava2:rxandroid:$rx_android_version",
+            rx_kotlin = "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version",
             dagger2_compiler = "com.google.dagger:dagger-compiler:$dagger2_version",
             dagger2_support = "com.google.dagger:dagger-android-support:$dagger2_version",
             dagger2_annotation = "com.google.dagger:dagger-android-processor:$dagger2_version",
