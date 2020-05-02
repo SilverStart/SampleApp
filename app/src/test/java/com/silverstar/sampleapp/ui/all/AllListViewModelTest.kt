@@ -60,7 +60,7 @@ class AllListViewModelTest {
 
             private val listThatHasValue =
                 listOf(
-                    Item("name", "thumbnailUrl", "imageUrl", 10f, false)
+                    Item("name", "thumbnailUrl", "imageUrl", "subject", 1000, 10f, false)
                 )
 
             @BeforeEach

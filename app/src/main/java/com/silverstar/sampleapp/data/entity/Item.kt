@@ -11,6 +11,10 @@ data class Item(
     val thumbnailUrl: String,
     @ColumnInfo(name = "image_url")
     val imageUrl: String,
+    @ColumnInfo(name = "subject")
+    val subject: String,
+    @ColumnInfo(name = "price")
+    val price: Int,
     @ColumnInfo(name = "rate")
     val rate: Float,
     @ColumnInfo(name = "liked")

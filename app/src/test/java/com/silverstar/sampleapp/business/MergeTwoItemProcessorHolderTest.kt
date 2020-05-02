@@ -34,7 +34,7 @@ class MergeTwoItemProcessorHolderTest {
 
         repeat(n) {
             listThatHasNItems.add(
-                Item("name", "thumbnailUrl", "imageUrl", 10f, false)
+                Item("name", "thumbnailUrl", "imageUrl", "subject", 1000, 10f, false)
             )
         }
 
@@ -123,20 +123,20 @@ class MergeTwoItemProcessorHolderTest {
                 ItemFromServer(
                     "name",
                     "thumbnailUrl",
-                    Description("imageUrl"),
+                    Description("imageUrl", "subject", 1000),
                     10f
                 ),
                 ItemFromServer(
                     "name2",
                     "thumbnailUrl",
-                    Description("imageUrl"),
+                    Description("imageUrl", "subject", 1000),
                     8f
                 ),
 
                 ItemFromServer(
                     "name3",
                     "thumbnailUrl",
-                    Description("imageUrl"),
+                    Description("imageUrl", "subject", 1000),
                     9f
                 )
             )
@@ -159,9 +159,9 @@ class MergeTwoItemProcessorHolderTest {
             private val emptyItemList: List<Item> = getEmptyItemList()
 
             private val itemListThatHas3Items: List<Item> = listOf(
-                Item("name", "thumbnailUrl", "imageUrl", 10f, false),
-                Item("name2", "thumbnailUrl", "imageUrl", 8f, false),
-                Item("name3", "thumbnailUrl", "imageUrl", 9f, false)
+                Item("name", "thumbnailUrl", "imageUrl", "subject", 1000, 10f, false),
+                Item("name2", "thumbnailUrl", "imageUrl", "subject", 1000, 8f, false),
+                Item("name3", "thumbnailUrl", "imageUrl", "subject", 1000, 9f, false)
             )
 
             @BeforeEach
@@ -190,13 +190,13 @@ class MergeTwoItemProcessorHolderTest {
         inner class ContextWithItemDaoThatReturnsListThatHas1Item {
 
             private val listThatHas1Item: List<Item> = listOf(
-                Item("name", "thumbnailUrl", "imageUrl", 10f, true)
+                Item("name", "thumbnailUrl", "imageUrl", "subject", 1000, 10f, true)
             )
 
             private val itemListWhichIsCompared: List<Item> = listOf(
-                Item("name", "thumbnailUrl", "imageUrl", 10f, true),
-                Item("name2", "thumbnailUrl", "imageUrl", 8f, false),
-                Item("name3", "thumbnailUrl", "imageUrl", 9f, false)
+                Item("name", "thumbnailUrl", "imageUrl", "subject", 1000, 10f, true),
+                Item("name2", "thumbnailUrl", "imageUrl", "subject", 1000, 8f, false),
+                Item("name3", "thumbnailUrl", "imageUrl", "subject", 1000, 9f, false)
             )
 
 

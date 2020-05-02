@@ -33,7 +33,15 @@ class MergeTwoItemProcessorHolder @Inject constructor(
             : Result<List<Item>> {
         return targetList.map {
             val liked = comparedList.find { compared -> it.isEquals(compared) } != null
-            Item(it.name, it.thumbnailUrl, it.description.imageUrl, it.rate, liked)
+            Item(
+                it.name,
+                it.thumbnailUrl,
+                it.description.imageUrl,
+                it.description.subject,
+                it.description.price,
+                it.rate,
+                liked
+            )
         }.toResult()
     }
 
