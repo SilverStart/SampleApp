@@ -1,17 +1,13 @@
 package com.silverstar.sampleapp.ui.all
 
 import com.silverstar.sampleapp.business.base.ProcessorHolder
-import com.silverstar.sampleapp.data.dao.ItemDao
 import com.silverstar.sampleapp.data.entity.Item
-import com.silverstar.sampleapp.data.pojo.ItemFromServer
 import com.silverstar.sampleapp.utils.Result
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
 class AllListViewModel(
-    loadItemByPageProcessorHolder: ProcessorHolder<Int, Result<List<ItemFromServer>>>,
-    dao: ItemDao,
-    mergeTwoItemProcessorHolder: ProcessorHolder<Pair<List<ItemFromServer>, List<Item>>, List<Item>>
+    mergeTwoItemProcessorHolder: ProcessorHolder<Int, Result<List<Item>>>
 ) {
 
     private val _isLoading = BehaviorSubject.createDefault(false)
@@ -19,17 +15,17 @@ class AllListViewModel(
 
     private val allItemListRequest = BehaviorSubject.create<Int>()
 
-    private val allItemListResult: Observable<Result<List<ItemFromServer>>> =
+    private val allItemListResult: Observable<Result<List<Item>>> =
         allItemListRequest
             .doOnNext { _isLoading.onNext(true) }
-            .compose(loadItemByPageProcessorHolder.processor)
+            .compose(mergeTwoItemProcessorHolder.processor)
             .doOnNext { _isLoading.onNext(false) }
             .share()
 
-    val list: Observable<List<ItemFromServer>> =
+    val list: Observable<List<Item>> =
         allItemListResult
             .filter { it is Result.OnSuccess }
-            .map { it as Result.OnSuccess<List<ItemFromServer>> }
+            .map { it as Result.OnSuccess<List<Item>> }
             .map {
                 it.data
             }
