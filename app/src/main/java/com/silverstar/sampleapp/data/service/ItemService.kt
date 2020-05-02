@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface ItemService {
 
-    @GET("https://www.gccompany.co.kr/App/json/{page}.json")
+    @GET("App/json/{page}.json")
     fun getItemBy(@Path("page") page: Int): Observable<ItemResult>
 
     data class ItemResult(
@@ -23,6 +23,5 @@ interface ItemService {
             val product: List<ItemFromServer>
         )
     }
-
 
 }
