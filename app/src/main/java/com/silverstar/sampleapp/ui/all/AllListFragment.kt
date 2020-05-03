@@ -1,15 +1,17 @@
 package com.silverstar.sampleapp.ui.all
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.silverstar.sampleapp.R
 import com.silverstar.sampleapp.ui.adapter.ItemAdapter
+import com.silverstar.sampleapp.ui.detail.DetailActivity
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -26,9 +28,16 @@ class AllListFragment : DaggerFragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: View
 
-    private val adapter = ItemAdapter {
-        viewModel.updateLikedState(it)
-    }
+    private val adapter = ItemAdapter(
+        {
+            startActivity(
+                Intent(requireContext(), DetailActivity::class.java)
+                    .putExtra(DetailActivity.EXTRA_ITEM, Gson().toJson(it))
+            )
+        },
+        {
+            viewModel.updateLikedState(it)
+        })
 
     override fun onCreateView(
         inflater: LayoutInflater,

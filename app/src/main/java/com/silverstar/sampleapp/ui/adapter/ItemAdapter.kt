@@ -13,6 +13,7 @@ import com.silverstar.sampleapp.R
 import com.silverstar.sampleapp.data.entity.Item
 
 class ItemAdapter(
+    private val itemClickListener: (Item) -> Unit,
     private val likedClickListener: (Item) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
@@ -21,10 +22,14 @@ class ItemAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.layout_item, parent, false)
-        ) {
-            likedClickListener(itemList[it])
-        }
+                .inflate(R.layout.layout_item, parent, false),
+            {
+                itemClickListener(itemList[it])
+            },
+            {
+                likedClickListener(itemList[it])
+            }
+        )
     }
 
     override fun getItemCount(): Int = itemList.size
@@ -43,6 +48,7 @@ class ItemAdapter(
 
     class ItemViewHolder(
         v: View,
+        itemClickListener: (Int) -> Unit,
         likedClickListener: (Int) -> Unit
     ) : RecyclerView.ViewHolder(v) {
 
@@ -52,6 +58,9 @@ class ItemAdapter(
         private val ivThumbnail: ImageView = v.findViewById(R.id.iv_thumbnail)
 
         init {
+            v.findViewById<View>(R.id.cv_container).setOnClickListener {
+                itemClickListener(adapterPosition)
+            }
             cbLiked.setOnClickListener {
                 likedClickListener(adapterPosition)
             }
