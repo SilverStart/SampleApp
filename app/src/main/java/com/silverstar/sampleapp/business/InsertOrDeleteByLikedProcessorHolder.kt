@@ -23,7 +23,7 @@ class InsertOrDeleteByLikedProcessorHolder @Inject constructor(
 
     private fun insert(item: Item): Observable<Unit> {
         return Observable.fromCallable {
-            itemDao.insert(item)
+            itemDao.insert(item.copy(liked = true))
         }.subscribeOn(schedulerProvider.io())
     }
 
