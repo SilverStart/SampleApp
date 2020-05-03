@@ -9,5 +9,10 @@
 
     <string name="unknown_access">잘못된 접근입니다.</string>
 
+    <string name="sort_option_1">최근등록순(옛날)</string>
+    <string name="sort_option_2">최근등록순(최근)</string>
+    <string name="sort_option_3">평점순(오름)</string>
+    <string name="sort_option_4">평점순(내림)</string>
+
     <string name="content_description_thumbnail">thumbnail image</string>
 </resources>

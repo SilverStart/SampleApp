@@ -2,13 +2,12 @@ package com.silverstar.sampleapp.ui.liked
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.silverstar.sampleapp.R
+import com.silverstar.sampleapp.business.SortOption
 import com.silverstar.sampleapp.ui.adapter.ItemAdapter
 import com.silverstar.sampleapp.ui.detail.DetailActivity
 import dagger.android.support.DaggerFragment
@@ -37,11 +36,40 @@ class LikedListFragment : DaggerFragment() {
             viewModel.updateLikedState(it)
         })
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_liked, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_1 -> {
+                viewModel.likedListViewModel.sortLikedItemWith(SortOption.TIME_ASCENDING)
+                return true
+            }
+            R.id.item_2 -> {
+                viewModel.likedListViewModel.sortLikedItemWith(SortOption.TIME_DESCENDING)
+                return true
+            }
+            R.id.item_3 -> {
+                viewModel.likedListViewModel.sortLikedItemWith(SortOption.RATE_ASCENDING)
+                return true
+            }
+            R.id.item_4 -> {
+                viewModel.likedListViewModel.sortLikedItemWith(SortOption.RATE_DESCENDING)
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_liked_list, container, false)
     }
 

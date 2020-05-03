@@ -6,6 +6,7 @@ import com.silverstar.sampleapp.data.entity.Item
 import com.silverstar.sampleapp.rx.SchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import java.util.*
 import javax.inject.Inject
 
 class InsertOrDeleteByLikedProcessorHolder @Inject constructor(
@@ -16,7 +17,7 @@ class InsertOrDeleteByLikedProcessorHolder @Inject constructor(
         get() = ObservableTransformer {
             it.concatMap { item ->
                 if (item.liked) delete(item)
-                else insert(item)
+                else insert(item.copy(dateTime = Calendar.getInstance().timeInMillis))
             }
                 .observeOn(schedulerProvider.ui())
         }

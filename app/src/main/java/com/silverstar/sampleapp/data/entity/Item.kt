@@ -20,5 +20,7 @@ data class Item(
     @ColumnInfo(name = "rate")
     val rate: Float,
     @ColumnInfo(name = "liked")
-    val liked: Boolean
+    val liked: Boolean,
+    @ColumnInfo(name = "date_time")
+    val dateTime: Long = 0
 )
