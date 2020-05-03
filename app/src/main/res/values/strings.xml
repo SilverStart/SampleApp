@@ -2,7 +2,7 @@
     <string name="app_name">SampleApp</string>
 
     <string name="rate_fmt">%1$.1f점</string>
-    <string name="price_fmt">%1$d점</string>
+    <string name="price_fmt">%1$d원</string>
 
     <string name="show_all">전체보기</string>
     <string name="show_liked">즐겨찾기</string>
