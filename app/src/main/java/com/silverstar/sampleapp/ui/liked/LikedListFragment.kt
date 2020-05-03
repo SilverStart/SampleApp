@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.silverstar.sampleapp.R
 import com.silverstar.sampleapp.business.SortOption
-import com.silverstar.sampleapp.ui.adapter.ItemAdapter
+import com.silverstar.sampleapp.ui.adapter.LikedItemAdapter
 import com.silverstar.sampleapp.ui.detail.DetailActivity
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
@@ -25,7 +25,7 @@ class LikedListFragment : DaggerFragment() {
 
     private lateinit var recyclerView: RecyclerView
 
-    private val adapter = ItemAdapter(
+    private val adapter = LikedItemAdapter(
         {
             startActivity(
                 Intent(requireContext(), DetailActivity::class.java)

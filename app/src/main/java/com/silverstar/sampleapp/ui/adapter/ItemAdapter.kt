@@ -12,12 +12,12 @@ import com.bumptech.glide.Glide
 import com.silverstar.sampleapp.R
 import com.silverstar.sampleapp.data.entity.Item
 
-class ItemAdapter(
+open class ItemAdapter(
     private val itemClickListener: (Item) -> Unit,
     private val likedClickListener: (Item) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
-    private var itemList: List<Item> = emptyList()
+    protected var itemList: List<Item> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -46,7 +46,7 @@ class ItemAdapter(
         result.dispatchUpdatesTo(this)
     }
 
-    class ItemViewHolder(
+    open class ItemViewHolder(
         v: View,
         itemClickListener: (Int) -> Unit,
         likedClickListener: (Int) -> Unit
@@ -66,7 +66,7 @@ class ItemAdapter(
             }
         }
 
-        fun bind(item: Item) {
+        open fun bind(item: Item) {
             tvName.text = item.name
             tvRate.text = tvRate.context.getString(R.string.rate_fmt, item.rate)
             cbLiked.isChecked = item.liked
