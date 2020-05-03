@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SampleApp</string>
+
+    <string name="rate_fmt">%1$.1f점</string>
+
+    <string name="content_description_thumbnail">thumbnail image</string>
 </resources>

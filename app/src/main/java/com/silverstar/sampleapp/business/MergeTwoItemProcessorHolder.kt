@@ -4,6 +4,7 @@ import com.silverstar.sampleapp.business.base.ProcessorHolder
 import com.silverstar.sampleapp.data.dao.ItemDao
 import com.silverstar.sampleapp.data.entity.Item
 import com.silverstar.sampleapp.data.pojo.ItemFromServer
+import com.silverstar.sampleapp.rx.SchedulerProvider
 import com.silverstar.sampleapp.utils.Error
 import com.silverstar.sampleapp.utils.Result
 import com.silverstar.sampleapp.utils.toResult
@@ -13,18 +14,20 @@ import javax.inject.Inject
 
 class MergeTwoItemProcessorHolder @Inject constructor(
     loadItemByPageProcessorHolder: ProcessorHolder<Int, Result<List<ItemFromServer>>>,
-    itemDao: ItemDao
+    itemDao: ItemDao,
+    schedulerProvider: SchedulerProvider
 ) :
     ProcessorHolder<Int, Result<List<Item>>> {
 
     override val processor = ObservableTransformer<Int, Result<List<Item>>> { observable ->
         Observables.combineLatest(
             observable.compose(loadItemByPageProcessorHolder.processor),
-            itemDao.getAll()
+            itemDao.getAll().subscribeOn(schedulerProvider.io())
         ) { a, b ->
             if (a is Result.OnError) error(a.error)
             else compare((a as Result.OnSuccess<List<ItemFromServer>>).data, b)
         }
+            .observeOn(schedulerProvider.ui())
     }
 
     private fun error(error: Error): Result<List<Item>> = error.toResult()

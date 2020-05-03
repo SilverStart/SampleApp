@@ -3,14 +3,18 @@ package com.silverstar.sampleapp.business
 import com.silverstar.sampleapp.business.base.ProcessorHolder
 import com.silverstar.sampleapp.data.pojo.ItemFromServer
 import com.silverstar.sampleapp.data.service.ItemService
+import com.silverstar.sampleapp.rx.SchedulerProvider
 import com.silverstar.sampleapp.utils.Result
 import com.silverstar.sampleapp.utils.toErrorResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import javax.inject.Inject
 
-class LoadItemByPageProcessorHolder @Inject constructor(private val itemService: ItemService) :
-    ProcessorHolder<Int, Result<List<ItemFromServer>>> {
+class LoadItemByPageProcessorHolder @Inject constructor(
+    private val itemService: ItemService,
+    private val schedulerProvider: SchedulerProvider
+) :
+    ProcessorHolder<Int, @JvmSuppressWildcards Result<List<ItemFromServer>>> {
 
     private var currentServerPageIndex: Int = INITIAL_INDEX_OF_SERVER_PAGE
 
@@ -21,18 +25,21 @@ class LoadItemByPageProcessorHolder @Inject constructor(private val itemService:
 
     override val processor: ObservableTransformer<Int, Result<List<ItemFromServer>>>
         get() = ObservableTransformer { observable ->
-            observable.flatMap { pageNumber ->
-                if (cachedItems.size < pageNumber * SIZE_OF_ONE_PAGE) {
-                    loadMore()
-                } else {
-                    doNothing()
+            observable
+                .observeOn(schedulerProvider.io())
+                .flatMap { pageNumber ->
+                    if (cachedItems.size < pageNumber * SIZE_OF_ONE_PAGE) {
+                        loadMore()
+                    } else {
+                        doNothing()
+                    }
                 }
-            }
                 .doOnNext { append(it) }
                 .map { Result.OnSuccess(getDividedListByPage()) as Result<List<ItemFromServer>> }
                 .onErrorReturn { it.toErrorResult() }
                 .replay(1)
                 .autoConnect()
+                .observeOn(schedulerProvider.ui())
         }
 
     private fun loadMore(): Observable<List<ItemFromServer>> {

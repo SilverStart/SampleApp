@@ -34,8 +34,9 @@ object NetworkModule {
         return GsonConverterFactory.create(GsonBuilder().create())
     }
 
-    @Singleton
     @Provides
+    @JvmStatic
+    @Singleton
     fun provideRetrofitClient(
         factories: Map<String, @JvmSuppressWildcards CallAdapter.Factory>,
         converters: Map<String, @JvmSuppressWildcards Converter.Factory>

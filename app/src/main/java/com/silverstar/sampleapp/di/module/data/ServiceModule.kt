@@ -12,7 +12,7 @@ object ServiceModule {
     @Provides
     @Singleton
     @JvmStatic
-    fun provideWeatherService(retrofit: Retrofit): ItemService {
+    fun provideItemService(retrofit: Retrofit): ItemService {
         return retrofit.create(ItemService::class.java)
     }
 }

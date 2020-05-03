@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.silverstar.sampleapp.data.pojo.Description
 import com.silverstar.sampleapp.data.pojo.ItemFromServer
 import com.silverstar.sampleapp.data.service.ItemService
+import com.silverstar.sampleapp.rx.TestSchedulerProvider
 import com.silverstar.sampleapp.utils.Result
 import io.reactivex.Observable
 import org.junit.jupiter.api.BeforeEach
@@ -19,6 +20,8 @@ class LoadItemByPageProcessorHolderTest {
     private val itemService: ItemService = mock()
 
     private lateinit var processorHolder: LoadItemByPageProcessorHolder
+
+    private val testSchedulerProvider = TestSchedulerProvider()
 
     private fun getEmptyList(): List<ItemFromServer> = emptyList()
 
@@ -58,7 +61,7 @@ class LoadItemByPageProcessorHolderTest {
         @Test
         @DisplayName("데이터가 흘러들어오면 빈 List 를 리턴한다")
         fun itReturnsEmptyList() {
-            processorHolder = LoadItemByPageProcessorHolder(itemService)
+            processorHolder = LoadItemByPageProcessorHolder(itemService, testSchedulerProvider)
 
             Observable.just(1)
                 .compose(processorHolder.processor)
@@ -87,7 +90,7 @@ class LoadItemByPageProcessorHolderTest {
         @Test
         @DisplayName("데이터가 흘러들어오면 18개의 아이템을 가진 List 를 리턴한다")
         fun itReturnsListThatHas18Items() {
-            processorHolder = LoadItemByPageProcessorHolder(itemService)
+            processorHolder = LoadItemByPageProcessorHolder(itemService, testSchedulerProvider)
             Observable.just(1)
                 .compose(processorHolder.processor)
                 .test()
@@ -126,7 +129,7 @@ class LoadItemByPageProcessorHolderTest {
         @Test
         @DisplayName("데이터로 1, 2 가 흘러들어오면 20개, 21개의 데이터를 가진 List 를 리턴한다")
         fun itReturnsListsThatHas20ItemsAnd21ItemsWhenComeValue1And2FromSource() {
-            processorHolder = LoadItemByPageProcessorHolder(itemService)
+            processorHolder = LoadItemByPageProcessorHolder(itemService, testSchedulerProvider)
 
             Observable.just(1, 2)
                 .compose(processorHolder.processor)

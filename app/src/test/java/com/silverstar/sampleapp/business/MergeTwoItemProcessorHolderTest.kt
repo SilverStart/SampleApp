@@ -7,6 +7,7 @@ import com.silverstar.sampleapp.data.dao.ItemDao
 import com.silverstar.sampleapp.data.entity.Item
 import com.silverstar.sampleapp.data.pojo.Description
 import com.silverstar.sampleapp.data.pojo.ItemFromServer
+import com.silverstar.sampleapp.rx.TestSchedulerProvider
 import com.silverstar.sampleapp.utils.Result
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -24,6 +25,8 @@ class MergeTwoItemProcessorHolderTest {
     private val itemDao: ItemDao = mock()
 
     private lateinit var mergeTwoItemProcessorHolder: MergeTwoItemProcessorHolder
+
+    private val testSchedulerProvider = TestSchedulerProvider()
 
     private fun getEmptyItemFromServerList(): List<ItemFromServer> = emptyList()
 
@@ -74,7 +77,8 @@ class MergeTwoItemProcessorHolderTest {
             fun itReturnsEmptyList() {
                 mergeTwoItemProcessorHolder = MergeTwoItemProcessorHolder(
                     loadItemByPageProcessorHolder,
-                    itemDao
+                    itemDao,
+                    testSchedulerProvider
                 )
 
                 Observable.just(1)
@@ -103,7 +107,8 @@ class MergeTwoItemProcessorHolderTest {
             fun itReturnsEmptyList() {
                 mergeTwoItemProcessorHolder = MergeTwoItemProcessorHolder(
                     loadItemByPageProcessorHolder,
-                    itemDao
+                    itemDao,
+                    testSchedulerProvider
                 )
 
                 Observable.just(1)
@@ -175,7 +180,8 @@ class MergeTwoItemProcessorHolderTest {
             fun itReturnsListThatHas3Items() {
                 mergeTwoItemProcessorHolder = MergeTwoItemProcessorHolder(
                     loadItemByPageProcessorHolder,
-                    itemDao
+                    itemDao,
+                    testSchedulerProvider
                 )
 
                 Observable.just(1)
@@ -211,7 +217,8 @@ class MergeTwoItemProcessorHolderTest {
             fun itReturnsListWhichIsComparedWithListReturnedFromItemDao() {
                 mergeTwoItemProcessorHolder = MergeTwoItemProcessorHolder(
                     loadItemByPageProcessorHolder,
-                    itemDao
+                    itemDao,
+                    testSchedulerProvider
                 )
 
                 Observable.just(1)
