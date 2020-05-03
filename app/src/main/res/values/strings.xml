@@ -3,5 +3,8 @@
 
     <string name="rate_fmt">%1$.1f점</string>
 
+    <string name="show_all">전체보기</string>
+    <string name="show_liked">즐겨찾기</string>
+
     <string name="content_description_thumbnail">thumbnail image</string>
 </resources>
