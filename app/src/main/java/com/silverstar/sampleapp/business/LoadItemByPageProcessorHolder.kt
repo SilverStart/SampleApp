@@ -5,7 +5,6 @@ import com.silverstar.sampleapp.data.pojo.ItemFromServer
 import com.silverstar.sampleapp.data.service.ItemService
 import com.silverstar.sampleapp.rx.SchedulerProvider
 import com.silverstar.sampleapp.utils.Result
-import com.silverstar.sampleapp.utils.toErrorResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import javax.inject.Inject
@@ -36,7 +35,6 @@ class LoadItemByPageProcessorHolder @Inject constructor(
                 }
                 .doOnNext { append(it) }
                 .map { Result.OnSuccess(getDividedListByPage()) as Result<List<ItemFromServer>> }
-                .onErrorReturn { it.toErrorResult() }
                 .replay(1)
                 .autoConnect()
                 .observeOn(schedulerProvider.ui())
@@ -44,7 +42,8 @@ class LoadItemByPageProcessorHolder @Inject constructor(
 
     private fun loadMore(): Observable<List<ItemFromServer>> {
         return itemService.getItemBy(currentServerPageIndex++)
-            .map { it.data.product }
+            .map { it.data?.product ?: emptyList() }
+            .onErrorReturn { emptyList() }
     }
 
     private fun doNothing(): Observable<List<ItemFromServer>> {

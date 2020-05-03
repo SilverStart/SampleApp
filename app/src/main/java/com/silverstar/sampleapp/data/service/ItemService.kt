@@ -13,14 +13,14 @@ interface ItemService {
 
     data class ItemResult(
         @SerializedName("data")
-        val data: DataResult
+        val data: DataResult? = null
     ) {
 
         data class DataResult(
             @SerializedName("totalCount")
-            val totalCount: Int,
+            val totalCount: Int = 0,
             @SerializedName("product")
-            val product: List<ItemFromServer>
+            val product: List<ItemFromServer> = emptyList()
         )
     }
 
