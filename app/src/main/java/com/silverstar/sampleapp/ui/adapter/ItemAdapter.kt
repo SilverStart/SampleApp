@@ -12,7 +12,9 @@ import com.bumptech.glide.Glide
 import com.silverstar.sampleapp.R
 import com.silverstar.sampleapp.data.entity.Item
 
-class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class ItemAdapter(
+    private val likedClickListener: (Item) -> Unit
+) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     private var itemList: List<Item> = emptyList()
 
@@ -20,7 +22,9 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
         return ItemViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.layout_item, parent, false)
-        )
+        ) {
+            likedClickListener(itemList[it])
+        }
     }
 
     override fun getItemCount(): Int = itemList.size
@@ -37,12 +41,21 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
         result.dispatchUpdatesTo(this)
     }
 
-    class ItemViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    class ItemViewHolder(
+        v: View,
+        likedClickListener: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(v) {
 
         private val tvName: TextView = v.findViewById(R.id.tv_name)
         private val tvRate: TextView = v.findViewById(R.id.tv_rate)
         private val cbLiked: CheckBox = v.findViewById(R.id.cb_liked)
         private val ivThumbnail: ImageView = v.findViewById(R.id.iv_thumbnail)
+
+        init {
+            cbLiked.setOnClickListener {
+                likedClickListener(adapterPosition)
+            }
+        }
 
         fun bind(item: Item) {
             tvName.text = item.name

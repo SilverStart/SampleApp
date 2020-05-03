@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,13 @@ class AllListFragment : DaggerFragment() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: View
+
+    private val adapter = ItemAdapter {
+        viewModel.updateLikedState(it)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,18 +43,21 @@ class AllListFragment : DaggerFragment() {
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(AllListHoldViewModel::class.java)
 
-        val adapter = ItemAdapter()
+        recyclerView = view.findViewById(R.id.recycler_view)
+        progressBar = view.findViewById(R.id.progress_bar)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        initRecyclerView()
+        subscribe()
+        viewModel.allListViewModel.init()
+    }
+
+    override fun onDestroyView() {
+        compositeDisposable.dispose()
+        super.onDestroyView()
+    }
+
+    private fun initRecyclerView() {
         recyclerView.adapter = adapter
-
-        compositeDisposable.add(
-            viewModel.allListViewModel
-                .list.subscribe {
-                    adapter.setItems(it)
-                }
-        )
-
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -55,10 +66,29 @@ class AllListFragment : DaggerFragment() {
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = adapter.itemCount
 
-                if (lastVisibleItemPosition == itemTotalCount - 1) viewModel.allListViewModel.loadNextPage()
+                if (lastVisibleItemPosition == itemTotalCount - 1) {
+                    viewModel.allListViewModel.loadNextPage()
+                }
             }
         })
+    }
 
-        viewModel.allListViewModel.init()
+    private fun subscribe() {
+        compositeDisposable.add(
+            viewModel.allListViewModel
+                .list.subscribe {
+                    adapter.setItems(it)
+                }
+        )
+        compositeDisposable.add(
+            viewModel.allListViewModel
+                .isLoading.subscribe {
+                    setLoadMoreProgressBarVisibility(it)
+                }
+        )
+    }
+
+    private fun setLoadMoreProgressBarVisibility(isVisible: Boolean) {
+        progressBar.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }
